@@ -26,7 +26,7 @@ export default function Config() {
   const permission = useApp((state) => state.permission);
   const updateSettings = useApp((state) => state.updateSettings);
   const askPermission = useApp((state) => state.askPermission);
-  const refresh = useApp((state) => state.refresh);
+  const reloadSettings = useApp((state) => state.reloadSettings);
 
   const [days, setDays] = useState(String(settings.alertDaysBefore));
   const [time, setTime] = useState(settings.alertTime);
@@ -87,9 +87,7 @@ export default function Config() {
         'Importar',
         async () => {
           await importBackup(backup);
-          const imported = useApp.getState();
-          await imported.updateSettings({ ...imported.settings });
-          refresh();
+          await reloadSettings();
           Alert.alert('Backup importado');
         },
       );

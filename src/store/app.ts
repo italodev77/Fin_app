@@ -22,6 +22,7 @@ interface AppState {
   shiftMonth: (delta: number) => void;
   refresh: () => void;
   updateSettings: (settings: Settings) => Promise<void>;
+  reloadSettings: () => Promise<void>;
   askPermission: () => Promise<void>;
   syncPermission: () => Promise<void>;
 }
@@ -56,6 +57,11 @@ export const useApp = create<AppState>((set, get) => ({
   updateSettings: async (settings) => {
     await saveSettings(settings);
     set({ settings });
+    get().refresh();
+  },
+
+  reloadSettings: async () => {
+    set({ settings: await getSettings() });
     get().refresh();
   },
 
